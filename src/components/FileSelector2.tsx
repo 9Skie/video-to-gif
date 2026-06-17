@@ -50,11 +50,11 @@ export function FileSelector2() {
   }))
 
   return <Show when={isAboutDrop()}>
-    <div class="inset-0 fixed z-1 bg-op-70 bg-white text-black flex">
-      <div class="m-8 text-center text-3xl flex flex-1 flex-col items-center justify-center gap-2 rounded-xl b-4 b-dashed">
-        <div><i class="i-mdi-file-video text-5xl"></i></div>
+    <div class="inset-0 fixed z-50 bg-neutral-900/40 backdrop-blur-sm text-neutral-900 flex p-6">
+      <div class="flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl b-2 b-dashed b-white/80 bg-white/80 text-center text-3xl">
+        <div><i class="i-mdi-file-video text-5xl text-indigo-500"></i></div>
         <div class="font-bold">Drop Video File...</div>
-        <div class="text-base">
+        <div class="text-base text-neutral-500">
           Current video will be closed!
         </div>
       </div>

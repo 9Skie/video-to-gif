@@ -12,10 +12,10 @@ const App: Component = () => {
   })
 
   return (
-    <div class="App">
+    <div class="App min-h-screen px-4 sm:px-6">
       <header class='text-center my-20'>
-        <h1 class='text-6xl font-thin my-10'>Video to GIF</h1>
-        <p>Convert in local browser, no uploading</p>
+        <h1 class='text-6xl font-thin my-10 tracking-tight text-neutral-900'>Video to GIF</h1>
+        <p class='text-neutral-500'>Convert in local browser, no uploading</p>
       </header>
 
       <Show when={!store.fileInfo.url}>
@@ -24,24 +24,21 @@ const App: Component = () => {
 
       {store.file && <FileSelector2 />}
       <Show when={store.fileInfo.url}>
-        <div class='flex gap-4 mx-auto max-w-7xl flex-col lg:flex-row'>
-          <div class="flex-1">
-            <OptionEditor />
+        <div class='mx-auto max-w-5xl'>
+          <OptionEditor />
 
-            <a
-              href="#" class='mt-2 block text-slate-8 text-center hover:text-blue'
-              onClick={() => updateStore({ file: null, fileInfo: { ...store.fileInfo, url: '' } })}
-            >Choose another file...</a>
-          </div>
-          <div class="flex-1">
-            <ProcessingBar />
-            {out()}
-          </div>
+          <a
+            href="#" class='mt-2 block text-sm text-neutral-500 text-center hover:text-indigo-600 transition-colors decoration-none'
+            onClick={() => updateStore({ file: null, fileInfo: { ...store.fileInfo, url: '' } })}
+          >Choose another file...</a>
+
+          <ProcessingBar />
+          {out()}
         </div>
       </Show>
 
-      <footer class="text-center my-20">
-        Made by @lyonbot, <a href="https://github.com/lyonbot/video-to-gif" class='text-blue' target='_blank'>Open-Sourced</a>
+      <footer class="text-center my-20 text-sm text-neutral-500">
+        Made by @lyonbot, <a href="https://github.com/lyonbot/video-to-gif" class='text-indigo-600 hover:underline decoration-none' target='_blank'>Open-Sourced</a>
       </footer>
     </div>
   );

@@ -252,7 +252,24 @@ export function ProcessingBar() {
     })
   }
 
-  return <div class="relative my-10 bg-white">
+  return <div class="relative my-8 flex flex-col items-stretch">
+    <div class="flex flex-col gap-1 mb-5 px-1">
+      <WarningMsg
+        when={outputSize().width > 600}
+        message={`width ${outputSize().width} is kinda large.`}
+        fix={() => updateStore('options', 'width', 600)}
+      />
+      <WarningMsg
+        when={outputSize().height > 600}
+        message={`height ${outputSize().height} is kinda large.`}
+        fix={() => updateStore('options', 'height', 600)}
+      />
+      <WarningMsg
+        when={outputTimeRange().frameCount > 250}
+        message={`frame count ${outputTimeRange().frameCount} can be decreased with framerate, trimming and speed-up`}
+      />
+    </div>
+
     {
       !isRunning()
         ? <button class="startButton" disabled={!store.ffmpeg && isUseFFMpeg()} onClick={startProcess}> <i class="i-mdi-play"></i> Convert to GIF</button>
@@ -260,7 +277,7 @@ export function ProcessingBar() {
     }
 
     {/* engine */}
-    <div class="text-center my-2 mb-4 text-gray text-sm flex flex-col gap-2">
+    <div class="text-center my-3 text-neutral-500 text-sm flex flex-col gap-2">
       <div>
         {
           isUseFFMpeg()
@@ -269,7 +286,7 @@ export function ProcessingBar() {
         }
 
         <a
-          class="ml-2 text-inherit hover:text-blue"
+          class="ml-2 text-inherit hover:text-indigo-600 decoration-none transition-colors"
           classList={{ 'pointer-events-none op-60': isRunning() }}
           href="#"
           onClick={(e) => { e.preventDefault(); setIsUseFFMpeg(!isUseFFMpeg()) }}
@@ -279,48 +296,33 @@ export function ProcessingBar() {
       </div>
 
       <Show when={!store.ffmpeg && isUseFFMpeg()}>
-        <div class="text-gray">
+        <div class="text-neutral-500">
           <span class="animate-flash animate-iteration-count-10 animate-duration-4000"><i class="i-mdi-loading animate-spin"></i> ffmpeg is loading...</span>
-          <a class="ml-2 text-blue" href="#" onClick={(e) => { e.preventDefault(); setIsUseFFMpeg(false) }}>(Switch to other encoder)</a>
+          <a class="ml-2 text-indigo-600 hover:underline decoration-none" href="#" onClick={(e) => { e.preventDefault(); setIsUseFFMpeg(false) }}>(Switch to other encoder)</a>
         </div>
       </Show>
     </div>
 
-    <WarningMsg
-      when={outputSize().width > 600}
-      message={`width ${outputSize().width} is kinda large.`}
-      fix={() => updateStore('options', 'width', 600)}
-    />
-    <WarningMsg
-      when={outputSize().height > 600}
-      message={`height ${outputSize().height} is kinda large.`}
-      fix={() => updateStore('options', 'height', 600)}
-    />
-    <WarningMsg
-      when={outputTimeRange().frameCount > 250}
-      message={`frame count ${outputTimeRange().frameCount} can be decreased with framerate, trimming and speed-up`}
-    />
-
     <Show when={errorMessage()}>
-      <div class="text-center my-4 text-red-7">
+      <div class="text-center my-4 text-rose-600 text-sm">
         <i class="i-mdi-alert-circle"></i> {errorMessage()}
       </div>
 
       <Show when={errorHint()}>
-        <div class="text-center my-4 mt--2 text-orange">
+        <div class="text-center my-4 mt--2 text-amber-600 text-sm">
           {errorHint()}
         </div>
       </Show>
     </Show>
 
     <Show when={isRunning()}>
-      <div class="text-center my-4">
+      <div class="text-center my-4 text-neutral-600 text-sm">
         <i class="i-mdi-loading animate-spin mr-1"></i>
         {progress()}
       </div>
       <Show when={percentage() >= 0}>
-        <div class="relative max-w-lg h-2 bg-gray-3 mx-auto rounded overflow-hidden">
-          <div class="h-full bg-blue-5 transition" style={{ width: `${percentage()}%` }}></div>
+        <div class="relative max-w-lg h-2 bg-neutral-200 mx-auto rounded-full overflow-hidden">
+          <div class="h-full bg-indigo-500 transition" style={{ width: `${percentage()}%` }}></div>
         </div>
       </Show>
     </Show>
@@ -329,9 +331,9 @@ export function ProcessingBar() {
 
 function WarningMsg(props: { message: string, when: any, fix?: () => void }) {
   return <Show when={props.when}>
-    <div class="text-left text-gray text-sm">
+    <div class="text-center text-neutral-500 text-sm">
       <i class="i-mdi-info-circle"></i> {props.message}
-      {props.fix && <a class="ml-2 text-blue" href="#" onClick={e => { e.preventDefault(); props.fix!() }}>(Fix It)</a>}
+      {props.fix && <a class="ml-2 text-indigo-600 hover:underline decoration-none" href="#" onClick={e => { e.preventDefault(); props.fix!() }}>(Fix It)</a>}
     </div>
   </Show>
 }

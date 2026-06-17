@@ -1,10 +1,28 @@
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fafaf9; // stone-50
+  color: #171717; // neutral-900
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
 .App {
   position: relative;
-  font-family: "Open Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
 button,
@@ -13,32 +31,41 @@ select,
 textarea {
   font-size: inherit;
   font-family: inherit;
+  color: inherit;
   border: 0;
+  background: transparent;
+
   &:focus {
-    outline: 1px solid currentColor;
-    outline-offset: -1px;
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #6366f1; // indigo-500
+    outline-offset: 2px;
   }
 }
 
 .uploadAcceptArea {
-  @apply border-3 b-slate-8 b-dashed bg-slate-2 rounded-xl cursor-pointer max-w-4xl mx-auto;
-  @apply py-16 px-4 flex flex-col gap-4 items-center justify-center text-3xl text-slate-8;
-  transition: 0.2s;
+  @apply b-1.5 b-dashed b-neutral-300 bg-white rounded-2xl cursor-pointer max-w-3xl mx-auto;
+  @apply py-20 px-6 flex flex-col gap-5 items-center justify-center text-neutral-500;
+  transition: border-color 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   .movieFileIcon {
-    transition: 0.2s;
+    color: #6366f1; // indigo-500
+    transition: transform 0.2s ease;
   }
 
   &:hover {
-    transition: 0.4s;
-    box-shadow:
-      0 0 0 5px #fff,
-      0 0 0 10px currentColor;
+    @apply b-indigo-400;
+    background-color: #eef2ff80; // indigo-50 / 50%
   }
 
-  &:focus,
+  &:focus-visible,
   &.dragOver {
-    @apply outline-0 b-orange-7 b-solid;
+    @apply b-indigo-500 bg-indigo-50;
+    outline: none;
+    box-shadow: 0 0 0 4px #c7d2fe55; // indigo-200 / 33%
 
     .movieFileIcon {
       transform: translateY(-3px);
@@ -47,24 +74,56 @@ textarea {
 }
 
 .startButton {
-  @apply block cursor-pointer mx-auto px-6 py-3;
-  @apply bg-blue b-0 rounded-xl text-xl text-white;
+  @apply inline-flex items-center justify-center gap-2 cursor-pointer mx-auto;
+  @apply px-7 py-3.5 b-0 rounded-xl text-base font-medium;
+  @apply bg-indigo-600 text-white;
+  box-shadow: 0 1px 2px rgba(79, 70, 229, 0.2),
+    0 4px 12px rgba(79, 70, 229, 0.18);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.06s ease;
 
-  @apply disabled:bg-gray disabled:cursor-default;
+  &:hover:not(:disabled) {
+    background-color: #4f46e5; // indigo-600 -> 500 hover feel
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    @apply bg-neutral-300 text-white cursor-default;
+    box-shadow: none;
+  }
 }
 
 .stopButton {
-  @apply block cursor-pointer mx-auto px-6 py-3;
-  @apply bg-orange b-0 rounded-xl text-xl text-white;
+  @apply inline-flex items-center justify-center gap-2 cursor-pointer mx-auto;
+  @apply px-7 py-3.5 b-0 rounded-xl text-base font-medium;
+  @apply bg-rose-600 text-white;
+  box-shadow: 0 1px 2px rgba(225, 29, 72, 0.2),
+    0 4px 12px rgba(225, 29, 72, 0.18);
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #e11d48; // rose-600 -> 500 hover feel
+  }
 }
 
 .optionEditorWatermarkExtra {
-  @apply bg-transparent text-white px-1 w-full hover:bg-gray-7 transition-height-200 h-12 overflow-hidden resize-none font-mono op-60;
+  @apply bg-neutral-50 text-neutral-800 px-2 py-1.5 w-full;
+  @apply b-1 b-solid b-neutral-200 rounded-md font-mono text-xs op-80;
+  height: 3rem;
+  overflow: hidden;
+  resize: none;
   box-sizing: border-box;
+  transition: height 0.2s ease, opacity 0.15s ease,
+    border-color 0.15s ease, background-color 0.15s ease;
 
   &:focus {
-    @apply h-32 op-100;
+    @apply b-indigo-400 bg-white op-100;
+    height: 9rem;
     overflow: auto;
+    outline: none;
 
     ~ .optionEditorWatermarkExtraNotice {
       display: block;
@@ -77,18 +136,19 @@ textarea {
   position: absolute;
   left: 0;
   bottom: 100%;
+  margin-bottom: 8px;
   box-sizing: border-box;
-  @apply text-sm text-white z-1 bg-blue-7 p-4 py-2 shadow-xl rounded w-full;
+  @apply text-xs text-white z-10 bg-neutral-900 px-3 py-2 rounded-lg w-full;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 
   &::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     top: 100%;
-    left: 10px;
+    left: 16px;
     width: 0;
     height: 0;
-    box-sizing: content-box;
-    border: 10px solid transparent;
-    @apply b-t-blue-7;
+    border: 6px solid transparent;
+    border-top-color: #171717; // neutral-900
   }
 }

@@ -27,19 +27,21 @@ export function OutputDisplay() {
 
   return <Show when={store.outputFileURL}>
     <section
-      class="rounded-xl p-4 mt-4 animate-zoom-in animate-duration-300 animate-ease-out"
-      classList={{ 'bg-gray-1': hasError(), 'bg-slate-2': !hasError() }}
+      class="rounded-2xl p-6 mt-4 bg-white b-1 b-solid shadow-sm animate-zoom-in animate-duration-300 animate-ease-out"
+      classList={{ 'b-rose-200': hasError(), 'b-neutral-200': !hasError() }}
       ref={e => setTimeout(() => playConfetti(e!), 50)}
     >
-      <h2>Output</h2>
+      <h2 class="text-lg font-semibold text-neutral-900 m-0 mb-4">Output</h2>
 
       <Show when={hasError()}>
-        <div class="bg-white p-4 rounded-xl mb-4">
-          <div class="">
-            <i class="i-mdi-emoticon-sad-outline text-xl mr-2" />
-            Am I messed it up?
+        <div class="bg-rose-50 b-1 b-solid b-rose-200 p-4 rounded-xl mb-4 text-rose-900">
+          <div class="flex items-center flex-wrap gap-3">
+            <span class="text-sm">
+              <i class="i-mdi-emoticon-sad-outline text-xl mr-2 align-middle" />
+              Am I messed it up?
+            </span>
 
-            <button class="rounded ml-4 p-4 py-2 bg-blue-6 text-white cursor-pointer" onClick={() => {
+            <button class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm cursor-pointer transition-colors" onClick={() => {
               const title = `Failed to convert: ${store.fileInfo.extname}`
               const body = [
                 '<!-- if possible, please provide the video file 🫴🎬 to analyze and solve bug🔬. -->',
@@ -60,30 +62,30 @@ export function OutputDisplay() {
         </div>
       </Show>
 
-      <p>File size: {readableFileSize(store.outputFileContent?.length || 0)}</p>
-      <p>
+      <p class="text-sm text-neutral-500 m-0 mb-1">File size: {readableFileSize(store.outputFileContent?.length || 0)}</p>
+      <p class="m-0 mb-4">
         <a
-          class="decoration-none text-blue-500 hover:underline"
+          class="inline-flex items-center gap-1.5 decoration-none text-indigo-600 hover:underline text-sm font-medium"
           download={store.file?.name + ".gif"} href={store.outputFileURL}
         >
-          <i class="i-mdi-download mr-1"></i>
+          <i class="i-mdi-download"></i>
           Download GIF
         </a>
       </p>
-      <img src={store.outputFileURL} alt="output" class="block mx-auto max-w-full rounded-xl" />
+      <img src={store.outputFileURL} alt="output" class="block mx-auto max-w-full rounded-xl bg-neutral-100" />
     </section>
 
-    <div class="justify-center items-center mt-4 flex gap-2">
+    <div class="justify-center items-center mt-5 flex flex-wrap gap-3 text-sm text-neutral-500">
       Feeling helpful?
 
-      <button class="rounded p-4 py-2 bg-emerald-6 text-white cursor-pointer"
+      <button class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm cursor-pointer transition-colors"
         onClick={() => { window.open('https://ko-fi.com/W7W0WWVJE', '_blank') }}
         onMouseEnter={() => { setShowDonate(true) }}
       >
         <i class="i-mdi-coffee"></i> Buy me a Coffee
       </button>
 
-      <button class="rounded p-4 py-2 bg-emerald-6 text-white cursor-pointer" onClick={() => {
+      <button class="inline-flex items-center gap-1.5 rounded-md px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm cursor-pointer transition-colors" onClick={() => {
         const message = '🎬⇒🎆 Video to GIF, in local, blazing fast⚡\n\nhttps://lyonbot.github.io/video-to-gif/\n\nJust found a handy web-app that convert video to GIF, no installing, blazing fast! 🤩 Check it out!'
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`, 'tweetShare')
       }}>
