@@ -5,3 +5,8 @@ dist/
 *.log
 *.tar.gz
 *.tgz
+
+# Project uses pnpm; ignore npm/yarn lockfiles
+package-lock.json
+yarn.lock
+

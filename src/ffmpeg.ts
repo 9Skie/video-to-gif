@@ -4,6 +4,12 @@ import { updateStore } from "./store";
 import workerURL from '@ffmpeg/ffmpeg/worker?url';
 
 declare const FFMPEG_CORE_VERSION: string; // injected by vite
+
+function isExtensionContext(): boolean {
+  // @ts-ignore - chrome is injected in extension pages
+  return typeof chrome !== 'undefined' && !!chrome?.runtime?.id;
+}
+
 let baseUrls = [
   `https://unpkg.com/@ffmpeg/core@${FFMPEG_CORE_VERSION}/dist/esm`,
   `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${FFMPEG_CORE_VERSION}/dist/esm`,
@@ -12,6 +18,21 @@ let baseUrls = [
 
 export async function initFFmpeg() {
   let ffmpeg = new FFmpeg()
+
+  // In a Chrome extension, MV3 CSP forbids loading scripts from blob: URLs.
+  // Load ffmpeg-core directly from the packaged extension assets — no fetch,
+  // no blob conversion, just the same-origin extension URL.
+  if (isExtensionContext()) {
+    // @ts-ignore
+    const baseURL = chrome.runtime.getURL('ffmpeg-core/esm');
+    await ffmpeg.load({
+      coreURL: `${baseURL}/ffmpeg-core.js`,
+      wasmURL: `${baseURL}/ffmpeg-core.wasm`,
+      classWorkerURL: workerURL,
+    });
+    updateStore({ ffmpeg })
+    return
+  }
 
   const preferredBaseURLKey = 'video-to-gif/ffmpeg-core-url'
   const preferredBaseURL = localStorage.getItem(preferredBaseURLKey)
